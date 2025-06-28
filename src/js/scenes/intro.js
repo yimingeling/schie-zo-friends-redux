@@ -33,6 +33,13 @@ export class Intro extends Scene {
 
 
     }
+    onPreUpdate(engine, elapsed) {
 
+        if (engine.input.keyboard.wasPressed(Keys.Space)) {
+            engine.loadLevel1();
+
+
+        }
+    }
 
 }

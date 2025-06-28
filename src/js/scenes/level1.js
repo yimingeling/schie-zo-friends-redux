@@ -1,5 +1,8 @@
-import {Actor, Vector} from "excalibur";
+import {Actor, BoundingBox, Keys, Scene, Vector} from "excalibur";
 import {Resources} from "../resources.js";
+import {BoxC, Ramp} from "../props/ramp.js";
+import {Kid} from "../props/kid.js";
+import {Player} from "../player/player.js";
 
 
 export class Level1 extends Scene {
@@ -9,41 +12,31 @@ export class Level1 extends Scene {
 
     onInitialize(engine) {
 
-        const background = new Actor({
+        const bg = new Actor({
             x: 5120,
             y: 1280,
             anchor: new Vector(0.5, 0.5),
             scale: new Vector(1, 1)
         });
 
-        background.graphics.use(Resources.Footballfield.toSprite());
-        this.add(background);
-        localStorage.setItem(`inventory`, JSON.stringify([]));
-
-
+        bg.graphics.use(Resources.Level1.toSprite());
+        this.add(bg);
 
         const player = new Player(300, 1500);
         // player.scale = new Vector(6, 6);
         this.add(player);
 
 
-        this.add(new Ball(480, 1920));
-
-
         const ramp = new Ramp(2000, 2000, 1500, 100, Math.PI / -20);
         this.add(ramp);
-
-        this.add(new Wall(0, 1500, 100, 3000));
-        this.add(new Wall(5120, 0, 10240, 100));
-        this.add(new Floor(0, 2160));
 
 
         const kid = new Kid(3000, 1800, 5, 5);
         this.add(kid)
 
 
-        const invisibleCollider = new InvisibleCollider(10240, 1500, 100, 3000);
-        this.add(invisibleCollider);
+        // const invisibleCollider = new InvisibleCollider(10240, 1500, 100, 3000);
+        // this.add(invisibleCollider);
 
         const boxObada = new BoxC(3990, 1700, 120, 400);
         this.add(boxObada);
@@ -93,17 +86,18 @@ export class Level1 extends Scene {
         const boxLampEight = new BoxC(8060, 1240, 100, 60);
         this.add(boxLampEight);
 
-        console.log(engine, engine.mygamepad);
 
         this.camera.zoom = 0.6;
         this.camera.strategy.lockToActor(player);
         this.camera.strategy.limitCameraBounds(new BoundingBox(100, 0, 10140, 2560)); // Set the game bounds
 
 
+        // const backgroundMusic = Resources.bgm1;
+        // backgroundMusic.loop = true;
+        // backgroundMusic.play(0.5);
 
-        const backgroundMusic = Resources.bgm1;
-        backgroundMusic.loop = true;
-        backgroundMusic.play(0.5);
 
     }
+
+
 }

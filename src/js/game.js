@@ -3,6 +3,7 @@ import {Actor, Engine, Vector, DisplayMode, SolverStrategy, Color} from "excalib
 import { Resources, ResourceLoader } from './resources.js'
 import {mainMenu} from "./scenes/mainMenu.js";
 import {Intro} from "./scenes/intro.js";
+import {Level1} from "./scenes/level1.js";
 
 
 const options = {
@@ -40,6 +41,14 @@ export class Game extends Engine {
 
         this.intro = new Intro(this)
         this.add('intro', this.intro)
+
+        this.level1 = new Level1(this)
+        this.add('level1', this.level1)
+
+        // this.level2 = new Level2(this)
+        // this.add('level2', this.level2)
+
+
     }
 
     startGame() {
@@ -48,8 +57,13 @@ export class Game extends Engine {
     }
 
     loadIntro(){
-        this.goToScene('intro');
-
+        this.goToScene('intro').then(r => this.remove('menu'));
+    }
+    loadLevel1(){
+        this.goToScene('level1').then(r => this.remove('intro'));
+    }
+    loadLevel2(){
+        this.goToScene('level2').then(r => this.remove('level1'));
     }
 
 
