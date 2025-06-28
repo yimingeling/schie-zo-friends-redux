@@ -1,32 +1,58 @@
 import '../css/style.css'
-import { Actor, Engine, Vector, DisplayMode } from "excalibur"
+import {Actor, Engine, Vector, DisplayMode, SolverStrategy, Color} from "excalibur"
 import { Resources, ResourceLoader } from './resources.js'
+import {mainMenu} from "./scenes/mainMenu.js";
+import {Intro} from "./scenes/intro.js";
+
+
+const options = {
+    width: 1440,
+    height: 900,
+    backgroundColor: Color.White,
+    physics: {
+        solver: SolverStrategy.Realistic,
+        gravity: new Vector(0, 1800),
+    },
+    maxFps: 60,
+    displayMode: DisplayMode.FitScreen,
+    suppressPlayButton: true
+}
+
 
 export class Game extends Engine {
 
-    constructor() {
-        super({ 
-            width: 1280,
-            height: 720,
-            maxFps: 60,
-            displayMode: DisplayMode.FitScreen
+
+
+
+
+
+
+    constructor() {``
+        super({
+            options
          })
         this.start(ResourceLoader).then(() => this.startGame())
     }
 
-    startGame() {
-        console.log("start de game!")
-        const fish = new Actor()
-        fish.graphics.use(Resources.Fish.toSprite())
-        fish.pos = new Vector(500, 300)
-        fish.vel = new Vector(-10,0)
-        fish.events.on("exitviewport", (e) => this.fishLeft(e))
-        this.add(fish)
+    onInitialize(engine) {
+        this.menu = new mainMenu(this)
+        this.add('menu', this.menu)
+
+        this.intro = new Intro(this)
+        this.add('intro', this.intro)
     }
 
-    fishLeft(e) {
-        e.target.pos = new Vector(1350, 300)
+    startGame() {
+        this.goToScene('menu');
+
     }
+
+    loadIntro(){
+        this.goToScene('intro');
+
+    }
+
+
 }
 
 new Game()
